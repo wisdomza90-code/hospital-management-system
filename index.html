@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مستشفى دكتور الفاتح التخصصي 🏥</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
+</head>
+<body>
+
+  <!-- ============ شاشة تسجيل الدخول ============ -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">🏥</div>
+      <h1>مستشفى دكتور الفاتح التخصصي</h1>
+      <p class="login-sub">سجل الدخول للوصول إلى لوحة التحكم</p>
+      <form id="login-form">
+        <label>اسم المستخدم</label>
+        <input type="text" id="login-user" placeholder="مثال: admin" autocomplete="off" />
+        <label>كلمة المرور</label>
+        <div class="pw-field">
+          <input type="password" id="login-pass" placeholder="••••••••" />
+          <button type="button" class="pw-toggle" onclick="App.togglePw('login-pass', this)" aria-label="إظهار/إخفاء كلمة المرور">{IC:eye}</button>
+        </div>
+        <div id="login-error" class="login-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">دخول</button>
+      </form>
+      <div class="login-hint">الرجاء تسجيل الدخول للوصول إلى لوحة التحكم</div>
+
+    </div>
+  </div>
+
+  <!-- ============ لوحة التحكم ============ -->
+  <div id="app" class="app hidden">
+
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🏥</span>
+        <span class="brand-text">مستشفى دكتور الفاتح التخصصي</span>
+      </div>
+      <nav id="nav" class="nav">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-ico">{IC:dashboard}</span> لوحة التحكم</button>
+        <button class="nav-item" data-page="patients"><span class="nav-ico">{IC:patients}</span> المرضى</button>
+        <button class="nav-item" data-page="doctors"><span class="nav-ico">{IC:doctors}</span> الأطباء</button>
+        <button class="nav-item" data-page="departments"><span class="nav-ico">{IC:departments}</span> الأقسام</button>
+        <button class="nav-item" data-page="appointments"><span class="nav-ico">{IC:appointments}</span> المواعيد</button>
+        <button class="nav-item" data-page="medical"><span class="nav-ico">{IC:medical}</span> الملفات الطبية</button>
+        <button class="nav-item" data-page="invoices"><span class="nav-ico">{IC:invoices}</span> الفواتير</button>
+        <button class="nav-item" data-page="reports"><span class="nav-ico">{IC:reports}</span> التقارير</button>
+        <button class="nav-item" data-page="users"><span class="nav-ico">{IC:users}</span> المستخدمون</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-mini" id="user-mini">👤 admin</div>
+        <button id="change-pw-btn" class="btn btn-outline btn-block">تغيير كلمة المرور</button>
+        <button id="logout-btn" class="btn btn-outline btn-block">تسجيل الخروج</button>
+      </div>
+    </aside>
+
+    <!-- المحتوى -->
+    <main class="content">
+      <header class="topbar">
+        <button id="toggle-sidebar" class="icon-btn" title="إظهار/إخفاء القائمة" aria-label="إظهار أو إخفاء القائمة">{IC:menu}</button>
+        <h2 id="page-title">لوحة التحكم</h2>
+        <div class="topbar-spacer"></div>
+        <div id="current-user" class="topbar-user">👤 admin</div>
+      </header>
+      <section id="page-content" class="page-content"></section>
+    </main>
+
+  </div>
+
+  <!-- ============ نافذة منبثقة ============ -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">عنوان</h3>
+        <button id="modal-close" class="icon-btn">✕</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- إشعارات -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/db.js?v=14"></script>
+  <script src="js/app.js?v=14"></script>
+</body>
+</html>
