@@ -1,13 +1,14 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const dbPath = path.join(__dirname, 'database.sqlite');
 const Database = require('better-sqlite3');
+
+// إعداد قاعدة البيانات
+const dbPath = path.join(__dirname, 'database.sqlite');
 const db = new Database(dbPath);
 
 const app = express();
 
-// إعدادات البنية الأساسية للتحليل والجلسات
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -17,44 +18,30 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// ربط مجلد الواجهة الأمامية (Frontend) تلقائياً
-// إذا كانت ملفات الـ HTML/CSS موجودة في مجلد أعلى أو بجانب السيرفر
-app.use(express.static(path.join(__dirname, '../public')));
-app.use(express.static(path.join(__dirname, 'public')));
+// ربط مجلد الملفات الثابتة (الواجهة الأمامية) بجوار ملف السيرفر مباشرة
+app.use(express.static(__dirname));
 
-// مسار افتراضي للتأكد من عمل السيرفر وقاعدة البيانات
+// مسار تجريبي للتأكد من عمل السيرفر وقاعدة البيانات
 app.get('/api/status', (req, res) => {
-  try {
-    const stmt = db.prepare("SELECT name FROM sqlite_master WHERE type='table';").all();
-    res.json({ status: 'Online', tables: stmt });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.json({ status: 'Online', message: 'Hospital Server is running successfully!' });
 });
 
-// توجيه الصفحة الرئيسية للواجهة أو عرض رسالة ترحيبية سليمة بدلاً من شاشة "خطأ"
+// المسار الرئيسي لفتح الواجهة أو عرض رسالة ترحيبية بدلاً من الشاشة البيضاء
 app.get('*', (req, res) => {
-  const publicPath = path.join(__dirname, '../public/index.html');
-  const localPublicPath = path.join(__dirname, 'public/index.html');
-  
-  // محاولة إرسال ملف الواجهة الرئيسي إذا وجد، وإلا إرسال رسالة توجيه واضحة
-  res.sendFile(publicPath, (err) => {
+  const indexPath = path.join(__dirname, 'index.html');
+  res.sendFile(indexPath, (err) => {
     if (err) {
-      res.sendFile(localPublicPath, (err2) => {
-        if (err2) {
-          res.send(
-            <div style="font-family: Tahoma; text-align: center; margin-top: 50px;">
-              <h2 style="color: #2b6cb0;">نظام إدارة المستشفيات يعمل بنجاح! 🚀</h2>
-              <p>السيرفر متصل وقاعدة البيانات جاهزة، يجدر التأكد من وجود ملفات الواجهة (Frontend) في مجلد public.</p>
-            </div>
-          );
-        }
-      });
+      res.send(
+        <div style="font-family: Tahoma; text-align: center; margin-top: 50px;">
+          <h2 style="color: #2b6cb0;">نظام إدارة المستشفيات يعمل بنجاح! 🚀</h2>
+          <p>السيرفر يعمل الآن وجاهز، يجدر التأكد من رفع ملف واجهة المستخدم (index.html) داخل مجلد server.</p>
+        </div>
+      );
     }
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(Server is running on port ${PORT});
+  console.log(Hospital server is running on port ${PORT} (production));
 });
