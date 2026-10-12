@@ -1,47 +1,18 @@
-const express = require('express');
-const session = require('express-session');
-const path = require('path');
-const Database = require('better-sqlite3');
-
-// إعداد قاعدة البيانات
-const dbPath = path.join(__dirname, 'database.sqlite');
-const db = new Database(dbPath);
-
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(session({
-  secret: 'hospital-management-secret-key',
-  resave: false,
-  saveUninitialized: false
-}));
-
-// ربط مجلد الملفات الثابتة (الواجهة الأمامية) بجوار ملف السيرفر مباشرة
-app.use(express.static(__dirname));
-
-// مسار تجريبي للتأكد من عمل السيرفر وقاعدة البيانات
-app.get('/api/status', (req, res) => {
-  res.json({ status: 'Online', message: 'Hospital Server is running successfully!' });
-});
-
-// المسار الرئيسي لفتح الواجهة أو عرض رسالة ترحيبية بدلاً من الشاشة البيضاء
-app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'index.html');
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      res.send(
-        <div style="font-family: Tahoma; text-align: center; margin-top: 50px;">
-          <h2 style="color: #2b6cb0;">نظام إدارة المستشفيات يعمل بنجاح! 🚀</h2>
-          <p>السيرفر يعمل الآن وجاهز، يجدر التأكد من رفع ملف واجهة المستخدم (index.html) داخل مجلد server.</p>
-        </div>
-      );
-    }
-  });
-});
-
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-  console.log(Hospital server is running on port ${PORT} (production));
-});
+{
+  "name": "hospital-management-system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0"
+  }
+}
