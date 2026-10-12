@@ -27,12 +27,12 @@ app.use(session({
   name: 'hospital.sid',
   secret: process.env.SESSION_SECRET || 'dev-insecure-secret-change-me',
   resave: false,
-  saveUninitialized: false,
-  cookie: {
+  saveUninitialized: true,
+  cookie: { 
     httpOnly: true,
     sameSite: 'lax',
-    secure: IS_PROD,          // يتطلب HTTPS في الإنتاج (متوفر على Render/Vercel)
-    maxAge: 1000 * 60 * 60 * 8 // 8 ساعات
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 8 ساعات
   }
 }));
 
