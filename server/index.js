@@ -192,12 +192,15 @@ app.delete('/api/:table/:id', requireAuth, (req, res) => {
 // =========================================================
 //  تقديم الواجهة (ملفات ساكنة محددة فقط — لا نكشف مجلدات الخادم)
 // =========================================================
-app.use('/css', express.static(path.join(ROOT, 'css')));
-app.use('/js', express.static(path.join(ROOT, 'js')));
-app.get('/', (req, res) => res.sendFile(path.join(ROOT, 'index.html')));
-app.get('/index.html', (req, res) => res.sendFile(path.join(ROOT, 'index.html')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/index.html', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+
 app.use((req, res) => res.status(404).json({ error: 'الصفحة غير موجودة' }));
 
 app.listen(PORT, () => {
-  console.log(`Hospital server is running on port ${PORT} (${IS_PROD ? 'production' : 'development'})`);
+  console.log(Hospital server is running on port ${PORT} (${IS_PROD ? 'production' : 'development'}));
 });
